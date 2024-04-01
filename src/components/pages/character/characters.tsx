@@ -1,17 +1,53 @@
 import { useEffect, useState } from "react";
 import Layout from "../../layout";
-import { LoadingButton } from "@mui/lab";
-import { CircularProgress } from "@mui/material";
 import Loader from "./loader";
+import { getAllCharacters } from "../../../services/characters";
+import { CharacterModel } from "../../../types/character";
+import CharacterCard from "./CharacterCard";
 
 const Characters = () => {
+  const [characters, setCharacters] = useState<CharacterModel[]>([]);
+  const [page, setPage] = useState<number | null>(41);
   const [loading, setloading] = useState<boolean>(true);
-  useEffect(() => {}, []);
+  useEffect(() => {
+    getCharacters();
+  }, []);
+
+  // TODO useCallback and UseMemo best practice, common mistakes.
+
+  async function getCharacters() {
+    if (page == null) return;
+    setloading(true);
+    const result = await getAllCharacters(page);
+    if (result instanceof Error) {
+      console.log(result.message);
+    } else {
+      if (page < result.info.pages) {
+        setPage((page) => page! + 1);
+      } else {
+        setPage(null);
+      }
+
+      setCharacters((chars) => {
+        return [...chars, ...result.results];
+      });
+    }
+    setloading(false);
+  }
 
   return (
     <Layout>
-      Characters
-      <Loader loading={loading} onLoad={() => {}} />
+      <div>
+        {characters.map((char, index) => (
+          <CharacterCard key={char.name} {...char} />
+        ))}
+      </div>
+
+      <Loader
+        loading={loading}
+        isDisabled={page == null}
+        onLoad={getCharacters}
+      />
     </Layout>
   );
 };

@@ -3,10 +3,11 @@ import { CircularProgress } from "@mui/material";
 
 interface LoaderProps {
   loading: boolean;
+  isDisabled: boolean;
   onLoad: () => void;
 }
 
-const Loader = ({ loading, onLoad }: LoaderProps) => {
+const Loader = ({ loading, isDisabled, onLoad }: LoaderProps) => {
   return (
     <div style={{ display: "flex", alignItems: "center", marginTop: "48px" }}>
       <LoadingButton
@@ -15,6 +16,7 @@ const Loader = ({ loading, onLoad }: LoaderProps) => {
         sx={{ margin: "auto" }}
         loading={loading}
         variant="outlined"
+        disabled={isDisabled}
       >
         Load More
       </LoadingButton>
