@@ -13,8 +13,6 @@ const Characters = () => {
     getCharacters();
   }, []);
 
-  // TODO useCallback and UseMemo best practice, common mistakes.
-
   async function getCharacters() {
     if (page == null) return;
     setloading(true);

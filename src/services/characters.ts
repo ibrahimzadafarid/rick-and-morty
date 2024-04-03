@@ -6,5 +6,5 @@ export const getAllCharacters = async (page: number) => {
 };
 
 // export const getAllLocations = async () => {
-//   return get<LocationResponse>("locations");
+//   return get<LocationResponse>(`locations`);
 // TODO};
